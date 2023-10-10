@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from "react";
-// import petsData from "../petsData";
+import petsData from "../petsData";
 import { useParams } from "react-router-dom";
 import { getPetById } from "../api/pets";
+import { useQuery } from "@tanstack/react-query";
 const PetDetail = () => {
   const { petId } = useParams();
-  const [pet, setPet] = useState({});
+  // const [pet, setPet] = useState({});
 
-  const callApi = async () => {
-    const res = await getPetById(petId);
-    setPet(res);
-  };
+  // const callApi = async () => {
+  //   const res = await getPetById(petId);
+  //   setPet(res);
+  // };
 
-  useEffect(() => {
-    callApi();
-  }, []);
+  // useEffect(() => {
+  //   callApi();
+  // }, []);
+
   // const pet = petsData.find((pet) => {
   //   return pet.id == petId;
-  // });
-  if (!pet) {
-    return <h1>There is no pet with the id: {petId}</h1>;
-  }
+  // // });
+  // if (!pet) {
+  //   return <h1>There is no pet with the id: {petId}</h1>;
+  // }
+
+  const { data: pet, isLoading } = useQuery({
+    queryKey: ["petId", petId],
+    queryFn: () => getPetById(petId),
+  });
+  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <div className="bg-[#F9E3BE] w-screen h-[100vh] flex justify-center items-center">
