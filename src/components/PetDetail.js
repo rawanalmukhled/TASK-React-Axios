@@ -28,16 +28,17 @@ const PetDetail = () => {
   });
 
   const queryClient = useQueryClient();
+
   const { mutate: updatePet } = useMutation({
     mutationKey: ["updatePet"],
     mutationFn: () => updatePetById(petId, pet.name, pet.type, pet.image),
-    onSuccess: () => queryClient.invalidateQueries(["pet"]),
+    onSuccess: () => queryClient.invalidateQueries(["pet", petId]),
   });
 
   const { mutate: DeletePet } = useMutation({
     mutationKey: ["deletePet"],
     mutationFn: () => deletePetById(petId),
-    onSuccess: () => queryClient.invalidateQueries(["pet"]),
+    onSuccess: () => queryClient.invalidateQueries(["pet", petId]),
   });
 
   if (isLoading) return <h1>Loading...</h1>;
